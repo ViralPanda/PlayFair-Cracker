@@ -1,3 +1,5 @@
+from random import randint
+
 def fetch_tet_values(fileName):
     dictionary = {}
     with open(fileName) as f:
@@ -130,12 +132,41 @@ def hill_climb(string):
         if(n >= 0):
             buff[buf_len] = n
             buf_len+=1
-    #iteration to do all of the following:
     #create the table
+    for i in range(0, 5):
+        for j in range(0, 5):
+            sq[i][j] = n
+            n+=1
+            if(n == 9)
+                n++ #skips j
+
 
     #random start
+    for i in range(0, 5):
+        for j in range(0, 5):
+            x = randint(0, 5)
+            y = randint(0,5)
+            c = sq[x][y]
+            sq[x][y] = sq[i][j]
+            sq[i][j] = c
 
     #mutation
+    cycle_limit = 20
+    fudge_factor = 0.23
+    begin_level = 1.0
+    noise_step = 1.5
+    noise_level = begin_level
+    cycle_number = 0
+    score = calc_score(buf_len)
+    current_hc_score = score
+    max_score = score
+
+    print('current string')
+    out_str = ""
+    for i in range(0, buf_len):
+        out_str += alphabet.charAt(plain_text[i]).lower()
+    print(out_str)
+    print('score = ' + str(score))
 
     #score update
         #print if updated
