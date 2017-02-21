@@ -143,9 +143,9 @@ def hill_climb(string):
 
     #random start
     for i in range(0, 5):
-        for j in range(0, 5):
-            x = randint(0, 5)
-            y = randint(0,5)
+        for j in range(0, 4):
+            x = randint(0, 4)
+            y = randint(0,4)
             c = sq[x][y]
             sq[x][y] = sq[i][j]
             sq[i][j] = c
@@ -168,11 +168,88 @@ def hill_climb(string):
     print(out_str)
     print('score = ' + str(score))
 
-    #score update
+    mutation_count = 0
+    number_accepted = 1
+    for i in range(0, max_trials):
+        choice = randint(0,5)
+        modify_table(choice)
+        score = calc_score(buf_len)
+        if(score > max_score):
+            max_score = score
+            print('updated string')
+            out_str = ""
+            for i in range(0, buf_len):
+                out_str += alphabet.charAt(plain_text[i]).lower()
+            print(out_str)
+            print('score = ' + str(score))
+            key = ""
+            for i in range(0, 5):
+                for j in range(0, 5):
+                    key+=alphabet[sq[i][j]]
+            print('key = ' + key)
+
+        if(score > ((current_hc_score-fudge_factor*buf_len)/(noise_level))):
+            if(score != current_hc_score):
+                number_accepted +=1
+            current_hc_score = score
+        else:
+            modify_table(choice)
+        noise_level += noise_step
+        cycle_number += 1
+        if(cycle_number >= cycle_limit):
+            noise_level = begin_level
+            cycle_numb = 0
+    print('ran out of trials');
+
         #print if updated
 
 
 
+
+def modify_table(choice):
+    n1 = randint(0, 4)
+    n2 = randint(0, 4)
+    n3 = randint(0, 4)
+    n4 = randint(0, 4)
+    if(choice == 0):
+        #rows are swapped
+        for i in range(0, 5):
+            c = sq[n1][i]
+            sq[n1][j] = sq[n2][j]
+            sq[j][n2] = c
+    elif(choice == 1):
+        #cols are swapped
+        for i in range(0, 5):
+            c = sq[i][n1]
+            sq[j][n1] = sq[j][n2]
+            sq[j][n2] = c
+    elif(choice == 2):
+        for i in range(0, 5):
+            c = sq[i][0]
+            sq[i][0] = sq[i][4]
+            sq[j][4] = c
+            c = sq[j][1]
+            sq[j][1] = sq[j][3]
+            sq[j][3] = c
+    elif(choice == 3):
+        for i in range(0, 5):
+            c = sq[0][i]
+            sq[0][j]  = sq[4][j]
+            sq[4][j] = c
+            c = sq[1][j]
+            sq[1][j] = sq[3][j]
+            sq[3][j] = c
+    elif(choice == 4):
+        for i in range(0, 5):
+            for j in range(0, 5):
+                c = sq[i][j]
+                sq[i][j] = sq[j][i]
+                sq[j][i] = c
+    else:
+        #pairs switched
+        c1 = sq[n1][n2]
+        sq[n1][n2] = sq[n3][n4]
+        sq[n3][n4] = c1
 
 def read_text(fileName):
     #TODO: read text from file
