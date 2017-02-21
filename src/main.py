@@ -1,4 +1,5 @@
-from random import randint
+import random
+import sys
 
 def fetch_tet_values(fileName):
     dictionary = {}
@@ -27,41 +28,8 @@ max_trials = 10000000
 sq = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10,11,12,13,14],[15, 16, 17, 18, 19],[20,21,22,23,24]]
 inv_row = [0]*91
 inv_col = [0]*91
-fudge_factor = 0.2
 buf_len = 0
 tet_vals = fetch_tet_values('probabilities.txt')
-def create_table(string):
-    #TODO: make the table using string's chars.
-    global tet_table
-    string = string.upper()
-    max_value = 0
-    max_table_len = 26 * 26 * 26 * 26
-    c0 = string[0]
-    c1 = string[1]
-    c2 = string[2]
-    n0 = alphabet.index(c0)
-    n1 = alphabet.index(c1)
-    n2 = alphabet.index(c2)
-    for i in range(3, len(string)):
-        c = string[i]
-        n = alphabet.index(c)
-        x = n0 + 26*n1 + 26 * 26 * n2 + 26*26*26*n
-        tet_table[x] += 1
-        n0 = n1
-        n1 = n2
-        n2 = n
-        if(tet_table[x] > max_value):
-            max_value = tet_table[x]
-            mc0 = c0
-            mc1 = c1
-            mc2 = c2
-            mc3 = c
-        c0 = c1
-        c1 = c2
-        c2 = c
-
-    for i in range(0, max_table_len):
-        tet_table[i] = math.log(1+tet_table[i])
 
 def tet_table_init():
     #TODO: create tet table.
@@ -71,9 +39,11 @@ def tet_table_init():
         i1 = alphabet.index(c[1])
         i2 = alphabet.index(c[2])
         i3 = alphabet.index(c[3])
-        n = i0 + 26 * i1 + 26 * 26 + i2 + 26 * 26 * 26 * i3
+        n = i0 + 26 * i1 + 26 * 26 * i2 + 26 * 26 * 26 * i3
         tet_table[n] = tet_vals[c]
-    print("tet_table initialized");
+    print("tet_table initialized")    
+    
+    
 
 
 tet_table_init() #call necessary to initialize tet_table
@@ -152,16 +122,16 @@ def hill_climb(string):
 
     #random start
     for i in range(0, 5):
-        for j in range(0, 4):
-            x = randint(0, 4)
-            y = randint(0,4)
+        for j in range(0, 5):
+            x = random.randint(0, 4)
+            y = random.randint(0,4)
             c = sq[x][y]
             sq[x][y] = sq[i][j]
             sq[i][j] = c
 
     #mutation
-    cycle_limit = 20
-    fudge_factor = 0.23
+    cycle_limit = 50
+    fudge_factor = 0.15
     begin_level = 1.0
     noise_step = 1.5
     noise_level = begin_level
@@ -174,15 +144,20 @@ def hill_climb(string):
     out_str = ""
     for i in range(0, buf_len):
         out_str += alphabet[plain_text[i]].lower()
-    print(out_str)
-    print('score = ' + str(score))
+    #print(out_str)
+    #print('score = ' + str(score))
 
     mutation_count = 0
     number_accepted = 1
     for i in range(0, max_trials):
-        choice = randint(0,5)
+        choice = random.randint(0,50)
         modify_table(choice)
         score = calc_score(buf_len)
+        key = ''
+        for i in range (0, 5):
+            for j in range(0, 5):
+                key+=alphabet[sq[i][j]]
+        #print(key)
         if(score > max_score):
             max_score = score
             print('updated string')
@@ -220,19 +195,26 @@ def hill_climb(string):
         if(cycle_number >= cycle_limit):
             noise_level = begin_level
             cycle_number = 0
+	    #random start
+    	    #for i in range(0, 5):
+            #	for j in range(0, 5):
+            #	    x = random.randint(0, 4)
+            #	    y = random.randint(0,4)
+            #	    c = sq[x][y]
+            #	    sq[x][y] = sq[i][j]
+            #	    sq[i][j] = c
+            
         #print(str(number_accepted))
     print('ran out of trials');
-
-        #print if updated
-
+        
 
 
 
 def modify_table(choice):
-    n1 = randint(0, 4)
-    n2 = randint(0, 4)
-    n3 = randint(0, 4)
-    n4 = randint(0, 4)
+    n1 = random.randint(0, 4)
+    n2 = random.randint(0, 4)
+    n3 = random.randint(0, 4)
+    n4 = random.randint(0, 4)
     if(choice == 0):
         #rows are swapped
         for i in range(0, 5):
