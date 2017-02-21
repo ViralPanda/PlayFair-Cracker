@@ -29,6 +29,7 @@ buf_len = 0
 
 def create_table(string):
     #TODO: make the table using string's chars.
+    global tet_table
     string = string.upper()
     max_value = 0
     max_table_len = 26 * 26 * 26 * 26
@@ -61,6 +62,7 @@ def create_table(string):
 
 def tet_table_init():
     #TODO: create tet table.
+    global tet_table
     for(c in tet_vals):
         i0 = alphabet.index(c[0])
         i1 = alphabet.index(c[1])
@@ -75,6 +77,7 @@ tet_table_init() #call necessary to initialize tet_table
 
 def place_deciphered_text(c1, c2, iStart):
     #TODO: place deciphered characters into plain_text buff
+    global plain_text
     row1 = inv_row[c1]
     col1 = inv_col[c1]
     row2 = inv_row[c2]
@@ -91,27 +94,34 @@ def place_deciphered_text(c1, c2, iStart):
 
 def dectrypt():
     #TODO: put decrypted text (using place_deciphered_text) in
+    global inv_row
+    global inv_col
+    global buff
+    global sq
     for i in range(0, 5):
         for j in range(0, 5):
             inv_row[sq[i][j]] = i
             inv_col[sq[i][j]] = j
 
     for i in range(0, buf_len, 2):
-        char1 = buffer[i]
-        char2 = buffer[i+1]
+        char1 = buff[i]
+        char2 = buff[i+1]
         place_deciphered_text(char1, char2, i)
 
 def calc_score(buffer_length):
     #TODO: calculate score of the resulting text
     decrypt()
+    global plain_text
     score = 0.0
     for i in range(0, buf_len - 3):
         n = plain_text[i] + 26*plain_text[i+1]+26*26*plain_text[i+2]+26*26*26*plain_text[i+3];
         score += tet_table[n]
+    return score
 
 
 def hill_climb(string):
     #TODO: actual code for hill climb
+
 
 def read_text(fileName):
     #TODO: read text from file
