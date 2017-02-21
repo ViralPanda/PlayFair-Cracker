@@ -161,7 +161,7 @@ def hill_climb(string):
 
     #mutation
     cycle_limit = 20
-    fudge_factor = 0.15
+    fudge_factor = 0.23
     begin_level = 1.0
     noise_step = 1.5
     noise_level = begin_level
@@ -197,17 +197,30 @@ def hill_climb(string):
                     key+=alphabet[sq[i][j]]
             print('key = ' + key)
 
-        if(score > ((current_hc_score-fudge_factor*buf_len)/(noise_level))):
+        #print("Current scroe = " + str(score))
+        if(score > current_hc_score-fudge_factor*buf_len/(noise_level)):
             if(score != current_hc_score):
                 number_accepted +=1
             current_hc_score = score
+            #print('updated string')
+            #out_str = ""
+            #for i in range(0, buf_len):
+            #    out_str += alphabet[plain_text[i]].lower()
+            #print(out_str)
+            #print('score = ' + str(score))
+            #key = ""
+            #for i in range(0, 5):
+            #    for j in range(0, 5):
+            #        key+=alphabet[sq[i][j]]
+            #print('key = ' + key)
         else:
             modify_table(choice)
         noise_level += noise_step
         cycle_number += 1
         if(cycle_number >= cycle_limit):
             noise_level = begin_level
-            cycle_numb = 0
+            cycle_number = 0
+        #print(str(number_accepted))
     print('ran out of trials');
 
         #print if updated
@@ -225,7 +238,7 @@ def modify_table(choice):
         for i in range(0, 5):
             c = sq[n1][i]
             sq[n1][i] = sq[n2][i]
-            sq[i][n2] = c
+            sq[n2][i] = c
     elif(choice == 1):
         #cols are swapped
         for i in range(0, 5):
