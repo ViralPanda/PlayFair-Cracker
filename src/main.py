@@ -145,6 +145,10 @@ def hill_climb(string):
 
 def read_text(fileName):
     #TODO: read text from file
+    ciphertext = '';
+    with open(fileName, 'r') as myfile:
+        ciphertext = myfile.read().replace('\n', '')
+    return data
 
+print(read_text('input.txt'))
 hill_climb(read_text('input.txt'))
-
