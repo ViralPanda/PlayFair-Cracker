@@ -121,6 +121,26 @@ def calc_score(buffer_length):
 
 def hill_climb(string):
     #TODO: actual code for hill climb
+    global buf_len
+    global buff
+    string = string.upcase()
+    buf_len = 0
+    for c in string:
+        n = alphabet.index(c)
+        if(n >= 0):
+            buff[buf_len] = n
+            buf_len+=1
+    #iteration to do all of the following:
+    #create the table
+
+    #random start
+
+    #mutation
+
+    #score update
+        #print if updated
+
+
 
 
 def read_text(fileName):
