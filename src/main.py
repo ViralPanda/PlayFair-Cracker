@@ -54,7 +54,7 @@ def place_deciphered_text(c1, c2, iStart):
     row1 = inv_row[c1]
     col1 = inv_col[c1]
     row2 = inv_row[c2]
-    col2 = inv_row[c2]
+    col2 = inv_col[c2]
     if(row1 == row2):
         plain_text[iStart] = sq[row1][(col1+4)%5]
         plain_text[iStart + 1] = sq[row2][(col2+4)%5]
@@ -130,8 +130,8 @@ def hill_climb(string):
             sq[i][j] = c
 
     #mutation
-    cycle_limit = 50
-    fudge_factor = 0.15
+    cycle_limit = 20
+    fudge_factor = 0.157
     begin_level = 1.0
     noise_step = 1.5
     noise_level = begin_level
